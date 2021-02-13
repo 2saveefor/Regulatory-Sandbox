@@ -4,7 +4,6 @@
 
 The project contains the necessary repositories to execute the transactions, document them in the ledger and obtain a copy of the contract authenticated by the contracting parties within the framework of the deal.
 
-![image](Rest API Gateway.jpg)
 
 ### Structure
 
@@ -68,7 +67,7 @@ public class EncryptExample
 
 Ensuring perfect encryption creates trust between contractors and facilitates establishing rights
 ### The mechanism
-![image](https://github.com/2saveefor/Regulatory-Sandbox/blob/main/Rest%20API%20Gateway.jpg)
+![image](https://raw.githubusercontent.com/2saveefor/Regulatory-Sandbox/main/Rest%20API%20Gateway.jpg)
 
 Creating interconnectedness between services lends a logic that protects regulations and legislation and gives meaning to the concept of contracting.
 

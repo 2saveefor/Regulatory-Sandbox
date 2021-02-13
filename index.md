@@ -9,59 +9,39 @@ The project contains the necessary repositories to execute the transactions, doc
 
 The infrastructure that provides rapid and secure access to important documents is a basic requirement in the field of contracts, so that the paragraphs can be found in one place and in a unified manner that ensures that the terms of the agreements are not tampered with.
 ```markdown
-using System;
-using System.IO;
-using System.Security.Cryptography;
+// using Ripple.TxSigning
+// using Newtonsoft.Json.Linq;
 
-public class EncryptExample
-{
-    public static void Main(string[] args)
-    {
-        //Encryption key used to encrypt the stream.
-        //The same value must be used to encrypt and decrypt the stream.
-        byte[] key = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
+var secret = "sEd7rBGm5kxzauRTAV2hbsNz7N45X91";
+var unsignedTxJson = @"{
+    'Account': 'rJZdUusLDtY9NEsGea7ijqhVrXv98rYBYN',
+    'Amount': '1000',
+    'Destination': 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
+    'Fee': '10',
+    'Flags': 2147483648,
+    'Sequence': 1,
+    'TransactionType' : 'Payment'
+}";
 
-        try
-        {
-            //Create a file stream
-            using FileStream myStream = new FileStream("TestData.txt", FileMode.OpenOrCreate);
+var signed = TxSigner.SignJson(JObject.Parse(unsignedTxJson), secret);
 
-            //Create a new instance of the default Aes implementation class  
-            // and configure encryption key.  
-            using Aes aes = Aes.Create();
-            aes.Key = key;
+Console.WriteLine(signed.Hash);
+Console.WriteLine(signed.TxJson);
+Console.WriteLine(signed.TxBlob);
 
-            //Stores IV at the beginning of the file.
-            //This information will be used for decryption.
-            byte[] iv = aes.IV;
-            myStream.Write(iv, 0, iv.Length);
-
-            //Create a CryptoStream, pass it the FileStream, and encrypt
-            //it with the Aes class.  
-            using CryptoStream cryptStream = new CryptoStream(
-                myStream, 
-                aes.CreateEncryptor(),
-                CryptoStreamMode.Write);
-
-            //Create a StreamWriter for easy writing to the
-            //file stream.  
-            using StreamWriter sWriter = new StreamWriter(cryptStream);
-
-            //Write to the stream.  
-            sWriter.WriteLine("Hello World!");
-
-            //Inform the user that the message was written  
-            //to the stream.  
-            Console.WriteLine("The file was encrypted.");
-        }
-        catch
-        {
-            //Inform the user that an exception was raised.  
-            Console.WriteLine("The encryption failed.");
-            throw;
-        }
-    }
-}
+// A8A9C869671D35A18DFB69AFB7741062DF43F73C8A5942AD94EE58ED31477AC6
+// {
+//   "Account": "rJZdUusLDtY9NEsGea7ijqhVrXv98rYBYN",
+//   "Amount": "1000",
+//   "Destination": "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",
+//   "Fee": "10",
+//   "Flags": 2147483648,
+//   "Sequence": 1,
+//   "TransactionType": "Payment",
+//   "SigningPubKey": "EDD3993CDC6647896C455F136648B7750723B011475547AF60691AA3D7438E021D",
+//   "TxnSignature": "C3646313B08EED6AF4392261A31B961F10C66CB733DB7F6CD9EAB079857834C8B0334270A2C037E63CDCCC1932E0832882B7B7066ECD2FAEDEB4A83DF8AE6303"
+// }
+// 120000228000000024000000016140000000000003E868400000000000000A7321EDD3993CDC6647896C455F136648B7750723B011475547AF60691AA3D7438E021D7440C3646313B08EED6AF4392261A31B961F10C66CB733DB7F6CD9EAB079857834C8B0334270A2C037E63CDCCC1932E0832882B7B7066ECD2FAEDEB4A83DF8AE63038114C0A5ABEF242802EFED4B041E8F2D4A8CC86AE3D18314B5F762798A53D543A014CAF8B297CFF8F2F937E8
 
 ```
 

@@ -1,0 +1,117 @@
+version: '3.4'
+
+services:
+  globoticket.web:
+    image: ${DOCKER_REGISTRY-}globoticketweb
+    build:
+      context: .
+      dockerfile: GloboTicket.Client/Dockerfile
+    environment:
+      - ApiConfigs__EventCatalog__Uri=http://globoticket.services.eventcatalog
+      - ApiConfigs__ShoppingBasket__Uri=http://globoticket.services.shoppingbasket
+
+  globoticket.services.eventcatalog:
+    image: ${DOCKER_REGISTRY-}globoticketserviceseventcatalog
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.EventCatalog/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=db;Initial Catalog=GloboTicketEventCatalogDb;Integrated Security=False;User ID=sa;Password=P(ssw0rd0123);Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;
+    depends_on:
+      - db
+
+  globoticket.services.shoppingbasket:
+    image: ${DOCKER_REGISTRY-}globoticketservicesshoppingbasket
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.ShoppingBasket/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=db;Initial Catalog=GloboTicketShoppingBasketDb;Integrated Security=False;User ID=sa;Password=P(ssw0rd0123);Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;
+      - ApiConfigs__EventCatalog__Uri=http://globoticket.services.eventcatalog
+    depends_on:
+      - db
+  
+  external.paymentgateway:
+    image: ${DOCKER_REGISTRY-}externalpaymentgateway
+    build:
+      context: .
+      dockerfile: External.PaymentGateway/Dockerfile
+
+
+  globoticket.web.bff:
+    image: ${DOCKER_REGISTRY-}globoticketwebbff
+    build:
+      context: .
+      dockerfile: GloboTicket.Web.Bff/Dockerfile
+
+
+  globoticket.gateway.mobilebff:
+    image: ${DOCKER_REGISTRY-}globoticketgatewaymobilebff
+    build:
+      context: .
+      dockerfile: GloboTicket.Gateway.MobileBff/Dockerfile
+
+
+  globoticket.gateway.webbff:
+    image: ${DOCKER_REGISTRY-}globoticketgatewaywebbff
+    build:
+      context: .
+      dockerfile: GloboTicket.Gateway.WebBff/Dockerfile
+
+
+  globoticket.services.discount:
+    image: ${DOCKER_REGISTRY-}globoticketservicesdiscount
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.Discount/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=db;Initial Catalog=GloboTicketDiscountDB;Integrated Security=False;User ID=sa;Password=P(ssw0rd0123);Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;
+    depends_on:
+      - db
+  
+
+
+  globoticket.services.marketing:
+    image: ${DOCKER_REGISTRY-}globoticketservicesmarketing
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.Marketing/Dockerfile
+    environment:
+      - ApiConfigs__ShoppingBasket__Uri=http://globoticket.services.shoppingbasket
+
+  globoticket.services.ordering:
+    image: ${DOCKER_REGISTRY-}globoticketservicesordering
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.Order/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=db;Initial Catalog=GloboTicketOrderingDB;Integrated Security=False;User ID=sa;Password=P(ssw0rd0123);Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;
+      - ServiceBusConnectionString=Endpoint=sb://globoticket.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Hi0hqUzgNIhGOcceT/gW4B23fHSlbVM+FPAxjq3zZTc=
+      - CheckoutMessageTopic=checkoutmessage
+      - OrderPaymentRequestMessageTopic=orderpaymentrequestmessage
+      - OrderPaymentUpdatedMessageTopic=orderpaymentupdatedmessage
+    depends_on:
+      - db
+
+  globoticket.services.payment:
+    image: ${DOCKER_REGISTRY-}globoticketservicespayment
+    build:
+      context: .
+      dockerfile: GloboTicket.Services.Payment/Dockerfile
+    environment:
+      - ServiceBusConnectionString=Endpoint=sb://globoticket.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Hi0hqUzgNIhGOcceT/gW4B23fHSlbVM+FPAxjq3zZTc=
+      - subscriptionName=globoticketpayment
+      - OrderPaymentRequestMessageTopic=orderpaymentrequestmessage
+      - OrderPaymentUpdatedMessageTopic=orderpaymentupdatedmessage
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    expose:
+     - "1433"
+    environment:
+     - ACCEPT_EULA=Y
+     - MSSQL_SA_PASSWORD=P(ssw0rd0123)
+
+

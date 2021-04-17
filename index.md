@@ -8,6 +8,8 @@ The project contains the necessary repositories to execute the transactions, doc
 ### Structure
 
 The infrastructure that provides rapid and secure access to important documents is a basic requirement in the field of contracts, so that the paragraphs can be found in one place and in a unified manner that ensures that the terms of the agreements are not tampered with.
+
+It can be useful to deploy your Microservices using containers and run them on a Kubernetes cluster that runs in Azure as a managed PaaS service (better known as AKS).
 ```markdown
 
 ```
@@ -15,6 +17,8 @@ The infrastructure that provides rapid and secure access to important documents 
 Ensuring perfect encryption creates trust between contractors and facilitates establishing rights
 ### The mechanism
 ![image](https://raw.githubusercontent.com/2saveefor/Regulatory-Sandbox/main/Rest%20API%20Gateway.jpg)
+![image](https://contentlab.io/wp-content/uploads/2019/02/image37.png)
+
 
 Creating interconnectedness between services lends a logic that protects regulations and legislation and gives meaning to the concept of contracting.
 

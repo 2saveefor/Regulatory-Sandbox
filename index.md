@@ -16,7 +16,6 @@ It can be useful to deploy your Microservices using containers and run them on a
 
 Ensuring perfect encryption creates trust between contractors and facilitates establishing rights
 ### The mechanism
-![image](https://raw.githubusercontent.com/2saveefor/Regulatory-Sandbox/main/Rest%20API%20Gateway.jpg)
 ![image](https://raw.githubusercontent.com/2saveefor/Regulatory-Sandbox/gh-pages/microserviceses.jpg)
 
 

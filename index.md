@@ -17,7 +17,7 @@ It can be useful to deploy your Microservices using containers and run them on a
 Ensuring perfect encryption creates trust between contractors and facilitates establishing rights
 ### The mechanism
 ![image](https://raw.githubusercontent.com/2saveefor/Regulatory-Sandbox/main/Rest%20API%20Gateway.jpg)
-![image](https://contentlab.io/wp-content/uploads/2019/02/image37.png)
+![image](https://raw.githubusercontent.com/2saveefor/Regulatory-Sandbox/gh-pages/microserviceses.jpg)
 
 
 Creating interconnectedness between services lends a logic that protects regulations and legislation and gives meaning to the concept of contracting.
